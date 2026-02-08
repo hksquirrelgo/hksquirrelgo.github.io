@@ -155,7 +155,6 @@
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
             background-color: rgba(255, 255, 255, 0.2);
         }
-
         /* Platform Selection Styles */
         .platform-btn {
             position: relative;
@@ -212,8 +211,6 @@
             <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-orange-500"></i>
         </button>
     </div>
-    
-    <!-- HERO SECTION -->
     <section class="flex flex-col items-center justify-center px-6 w-full max-w-7xl mx-auto pt-[calc(40px+env(safe-area-inset-top))] pb-[calc(60px+env(safe-area-inset-bottom))] text-center min-h-screen relative z-10">
         <div class="w-full max-w-[980px] mx-auto flex flex-col items-center justify-center gap-10 sm:gap-14">
             <div class="opacity-0 animate-scale-in origin-center relative">
@@ -228,7 +225,6 @@
                     <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none z-20"></div>
                 </div>
             </div>
-            
             <div class="space-y-6 opacity-0 animate-fade-up delay-100 max-w-4xl">
                 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 text-brand-deep dark:text-brand font-medium text-[11px] sm:text-xs uppercase tracking-wider mb-2 backdrop-blur-md">
                     <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span>
@@ -241,26 +237,21 @@
                     Transform Hong Kong into a virtual wilderness, <br class="hidden sm:block">where players discover diverse squirrel species!
                 </p>
             </div>
-            
             <div class="w-full max-w-[520px] opacity-0 animate-fade-up delay-200 flex flex-col items-center">
                 <form id="waitlistForm" class="relative group w-full" novalidate>
-                    <!-- Enhanced Platform Selector -->
                     <div id="platformSelector" class="grid grid-cols-2 gap-4 mb-6 transition-all duration-300 w-full">
                         <input type="hidden" name="platform" id="platformInput" required>
-                        
                         <button type="button" onclick="selectPlatform('ios')" class="platform-btn group h-[52px] flex items-center justify-center rounded-2xl bg-white/40 dark:bg-white/5 border border-white/40 dark:border-white/10 text-[15px] font-medium text-gray-600 dark:text-gray-300 backdrop-blur-md hover:bg-white/60 dark:hover:bg-white/10 active:scale-[0.98]" data-value="ios">
                             <i data-lucide="check" class="check-icon w-5 h-5 text-brand"></i>
                             <i data-lucide="apple" class="w-5 h-5 mr-2"></i>
                             <span>iOS</span>
                         </button>
-
                         <button type="button" onclick="selectPlatform('android')" class="platform-btn group h-[52px] flex items-center justify-center rounded-2xl bg-white/40 dark:bg-white/5 border border-white/40 dark:border-white/10 text-[15px] font-medium text-gray-600 dark:text-gray-300 backdrop-blur-md hover:bg-white/60 dark:hover:bg-white/10 active:scale-[0.98]" data-value="android">
                             <i data-lucide="check" class="check-icon w-5 h-5 text-brand"></i>
                             <i data-lucide="smartphone" class="w-5 h-5 mr-2"></i>
                             <span>Android</span>
                         </button>
                     </div>
-
                     <div id="inputWrapper" class="relative w-full transition-all duration-300 focus-ring-brand rounded-[24px] glass-input shadow-lg dark:shadow-none border border-white/50 dark:border-white/10 group-focus-within:border-brand/50 dark:group-focus-within:border-brand/50">
                         <input 
                             type="email" 
@@ -291,13 +282,11 @@
                     We will invite you when the beta starts.
                 </p>
             </div>
-            
             <div class="opacity-0 animate-fade-up delay-300 mt-4">
                 <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 animate-bounce"></i>
             </div>
         </div>
     </section>
-
     <section id="progress-section" class="flex flex-col items-center justify-center px-6 w-full max-w-7xl mx-auto py-20 min-h-screen relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl items-center">
             <div class="flex flex-col gap-6 text-left">
@@ -389,20 +378,15 @@
             </div>
         </div>
     </section>
-
     <footer class="w-full py-12 text-center bg-transparent safe-pb relative z-10 border-t border-gray-200/50 dark:border-white/5">
         <div class="max-w-7xl mx-auto px-6 flex flex-col items-center gap-6 text-[13px] font-medium text-gray-400/80 dark:text-gray-600">
             <div class="flex flex-col sm:flex-row items-center gap-4">
                 <span data-key="copyright">Copyright © 2026 WYHK IDEEA 3K Group 1</span>
                 <span class="hidden sm:inline text-gray-300 dark:text-gray-700">•</span>
-                <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-white/50 dark:bg-white/5 border border-white/20 dark:border-white/5">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand"></i>
-                    <span data-key="location">Made in Hong Kong</span>
-                </div>
+                <span data-key="location">Made in Hong Kong</span>
             </div>
         </div>
     </footer>
-
     <script>
         const CONFIG = {
             langKey: 's_lang',
@@ -421,9 +405,8 @@
                 errorNote: "Please enter a valid email address.",
                 selectPlatformError: "Please select your device platform.",
                 copyright: "Copyright © 2026 WYHK IDEEA 3K Group 1",
-                location: "Hong Kong",
+                location: "Made in Hong Kong",
                 langBtnLabel: "中",
-                // New Section
                 progressTitle: "Development Status",
                 progressDesc: "We are working hard to bring the squirrels to life...",
                 roadmapTitle: "Roadmap",
@@ -450,9 +433,8 @@
                 errorNote: "請輸入有效的電子郵件地址。",
                 selectPlatformError: "請選擇您的手機系統。",
                 copyright: "版權所有 © 2026 WYHK IDEEA 3K Group 1",
-                location: "香港",
+                location: "香港製造",
                 langBtnLabel: "EN",
-                // New Section
                 progressTitle: "開發進度",
                 progressDesc: "團隊正努力讓松鼠們活起來...",
                 roadmapTitle: "開發藍圖",
@@ -475,7 +457,6 @@
             isSubmitting: false,
             hasError: false
         };
-        // Progress Logic
         let animatedProgress = false;
         const TARGET_PERCENT = 40;
         document.addEventListener('DOMContentLoaded', () => {
@@ -485,16 +466,12 @@
             setupListeners();
             setupViewport();
             setupScrollObserver();
-            autoDetectPlatform(); // Auto detect OS
+            autoDetectPlatform(); 
         });
-
-        // Platform Selection Logic
         function selectPlatform(platform) {
             const input = document.getElementById('platformInput');
             const btns = document.querySelectorAll('.platform-btn');
-            
             input.value = platform;
-            
             btns.forEach(btn => {
                 if (btn.dataset.value === platform) {
                     btn.classList.add('selected');
@@ -502,8 +479,6 @@
                     btn.classList.remove('selected');
                 }
             });
-
-            // Clear error state if exists
             const selector = document.getElementById('platformSelector');
             selector.classList.remove('animate-shake');
             if (state.hasError && document.getElementById('emailInput').value) {
@@ -513,7 +488,6 @@
                  helper.classList.remove('text-red-500');
             }
         }
-
         function autoDetectPlatform() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) {
@@ -522,8 +496,6 @@
                 selectPlatform('android');
             }
         }
-
-        // Use IntersectionObserver to animate the bar only when visible
         function setupScrollObserver() {
             const section = document.getElementById('progress-section');
             const bar = document.getElementById('progressBar');
@@ -532,16 +504,13 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting && !animatedProgress) {
                         animatedProgress = true;
-                        // 1. Animate Width
                         bar.style.width = `${TARGET_PERCENT}%`;
-                        // 2. Animate Number Count
                         let start = 0;
                         const duration = 2000;
                         const startTime = performance.now();
                         function update(currentTime) {
                             const elapsed = currentTime - startTime;
                             const progress = Math.min(elapsed / duration, 1);
-                            // Easing function (easeOutExpo)
                             const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
                             const currentVal = Math.floor(ease * TARGET_PERCENT);
                             counter.innerText = `${currentVal}%`;
@@ -552,7 +521,7 @@
                         requestAnimationFrame(update);
                     }
                 });
-            }, { threshold: 0.3 }); // Trigger when 30% of section is visible
+            }, { threshold: 0.3 }); 
             if(section) observer.observe(section);
         }
         function setupListeners() {
@@ -612,7 +581,6 @@
             const textElements = document.querySelectorAll('[data-key]');
             textElements.forEach(el => {
                 const key = el.getAttribute('data-key');
-                // Don't overwrite helper text if it's currently showing success/error
                 if (key === 'note' && (state.hasError || document.getElementById('helperText').classList.contains('text-green-600'))) return;
                 if (t[key]) el.innerHTML = t[key];
             });
@@ -627,70 +595,55 @@
         async function handleFormSubmit(e) {
             e.preventDefault();
             if (state.isSubmitting) return;
-
             const input = document.getElementById('emailInput');
             const platformInput = document.getElementById('platformInput');
             const inputWrapper = document.getElementById('inputWrapper');
             const platformSelector = document.getElementById('platformSelector');
             const helperText = document.getElementById('helperText');
-            
             const email = input.value.trim();
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            
             const t = translations[state.lang];
-
-            // Validate Platform Selection
             if (!platformInput.value) {
                 platformSelector.classList.add('animate-shake');
                 helperText.innerHTML = t.selectPlatformError;
                 helperText.classList.add('text-red-500');
-                
                 setTimeout(() => {
                     platformSelector.classList.remove('animate-shake');
                 }, 500);
                 return;
             }
-
-            // Validate Email
             if (!emailRegex.test(email)) {
                 inputWrapper.classList.remove('animate-shake');
-                void inputWrapper.offsetWidth; // Trigger reflow
+                void inputWrapper.offsetWidth; 
                 inputWrapper.classList.add('input-error', 'animate-shake');
                 helperText.innerHTML = t.errorNote;
                 helperText.classList.add('text-red-500');
                 state.hasError = true;
                 return;
             }
-
             state.isSubmitting = true;
             state.hasError = false;
             helperText.classList.remove('text-red-500');
-            
-            // UI Loading State
             const btnText = document.getElementById('btnText');
             const btnLoader = document.getElementById('btnLoader');
             const btnSuccess = document.getElementById('btnSuccess');
             const submitBtn = document.getElementById('submitBtn');
-            
             btnText.style.transform = 'translateY(-30px)';
             btnLoader.style.opacity = '1';
             btnLoader.style.transform = 'translateY(0)';
             submitBtn.disabled = true;
-
             try {
                 const response = await fetch(CONFIG.formEndpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         email: email,
-                        platform: platformInput.value, // Send platform data
+                        platform: platformInput.value, 
                         lang: state.lang,
                         timestamp: new Date().toISOString()
                     })
                 });
-
                 if (response.ok) {
-                    // Success State
                     btnLoader.style.opacity = '0';
                     btnLoader.style.transform = 'translateY(-30px)';
                     btnSuccess.style.opacity = '1';
@@ -699,8 +652,6 @@
                     input.value = '';
                     helperText.innerHTML = t.successNote;
                     helperText.classList.add('text-green-600', 'dark:text-green-400');
-                    
-                    // Reset after delay
                     setTimeout(() => {
                         state.isSubmitting = false;
                         submitBtn.disabled = false;
@@ -710,9 +661,6 @@
                         submitBtn.classList.remove('bg-green-500', 'hover:bg-green-500', 'dark:bg-green-500');
                         helperText.classList.remove('text-green-600', 'dark:text-green-400');
                         helperText.innerHTML = t.note;
-                        // Optional: clear platform selection
-                        // platformInput.value = '';
-                        // document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('selected'));
                     }, 3000);
                 } else {
                     throw new Error('Submission failed');
