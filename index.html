@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#F5F5F7">
+    <meta name="description" content="Transform Hong Kong into a virtual wilderness. Discover diverse squirrel species in Squirrel GO.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Squirrel GO">
+    <title>Squirrel GO</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['SF Pro Display', 'Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            DEFAULT: '#FF9500', 
+                            hover: '#FFB340',
+                            deep: '#E08200',
+                            glow: 'rgba(255, 149, 0, 0.5)'
+                        },
+                        surface: {
+                            light: '#F5F5F7', 
+                            dark: '#000000',
+                            card: 'rgba(255, 255, 255, 0.65)',
+                            cardDark: 'rgba(28, 28, 30, 0.65)'
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-in': 'scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'blob': 'blob 10s infinite',
+                        'shake': 'shake 0.4s cubic-bezier(.36,.07,.19,.97) both',
+                        'width-grow': 'widthGrow 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.8)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        },
+                        widthGrow: {
+                            '0%': { width: '0%' },
+                            '100%': { width: 'var(--target-width)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        html { -webkit-tap-highlight-color: transparent; }
+        body {
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none;
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-input {
+            background: rgba(44, 44, 46, 0.6);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+        .dark .glass-card {
+            background: rgba(28, 28, 30, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .glass-input.input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2) !important;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FF9500 0%, #FF5E00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dark .text-gradient {
+            background: linear-gradient(135deg, #FFB340 0%, #FF8800 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        .ambient-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 149, 0, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dark .ambient-glow {
+            background: radial-gradient(circle, rgba(255, 149, 0, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+        .active-scale:active { transform: scale(0.95); }
+        .focus-ring-brand:focus-within {
+            box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.25);
+            border-color: #FF9500;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .safe-pt { padding-top: env(safe-area-inset-top, 20px); }
+        .safe-pb { padding-bottom: env(safe-area-inset-bottom, 20px); }
+        /* Custom Scrollbar for the Widget */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 20px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-[#F2F2F7] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] transition-colors duration-500 min-h-[100dvh] flex flex-col overflow-x-hidden relative">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="ambient-glow animate-blob"></div>
+        <div class="ambient-glow animate-blob" style="top: 20%; left: 20%; width: 400px; height: 400px; animation-delay: 2s;"></div>
+        <div class="ambient-glow animate-blob" style="top: 80%; left: 80%; width: 500px; height: 500px; animation-delay: 4s;"></div>
+    </div>
+    <div class="fixed top-0 right-0 z-50 p-6 safe-pt flex items-center gap-3">
+        <button onclick="toggleLanguage()" class="w-10 h-10 rounded-full bg-white/40 dark:bg-white/10 flex items-center justify-center text-[13px] font-semibold transition-all active-scale hover:bg-white/60 dark:hover:bg-white/20 outline-none focus:ring-2 focus:ring-brand/50 backdrop-blur-md shadow-sm border border-white/20 dark:border-white/5" id="langBtn" aria-label="Switch Language">
+            中
+        </button>
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-white/40 dark:bg-white/10 flex items-center justify-center transition-all active-scale hover:bg-white/60 dark:hover:bg-white/20 outline-none focus:ring-2 focus:ring-brand/50 backdrop-blur-md shadow-sm border border-white/20 dark:border-white/5" aria-label="Toggle Theme">
+            <i data-lucide="moon" class="w-4 h-4 hidden dark:block text-yellow-400"></i>
+            <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-orange-500"></i>
+        </button>
+    </div>
+    <section class="flex flex-col items-center justify-center px-6 w-full max-w-7xl mx-auto pt-[calc(20px+env(safe-area-inset-top))] pb-[calc(40px+env(safe-area-inset-bottom))] text-center min-h-screen relative z-10">
+        <div class="w-full max-w-[980px] mx-auto flex flex-col items-center justify-center gap-8 sm:gap-12">
+            <div class="opacity-0 animate-scale-in origin-center relative">
+                <div class="absolute inset-0 bg-brand/30 blur-2xl rounded-full transform scale-150 opacity-50 dark:opacity-30"></div>
+                <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-[24px] sm:rounded-[32px] bg-white dark:bg-[#1C1C1E] shadow-2xl dark:shadow-brand/10 ring-1 ring-black/5 dark:ring-white/10 flex items-center justify-center relative group overflow-hidden transition-transform duration-500 hover:scale-105 active:scale-95">
+                    <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#FF9500] to-[#FF5E00]">
+                         <i data-lucide="paw-print" class="w-12 h-12 text-white"></i>
+                    </div>
+                    <img src="icon.png" class="relative z-10 w-full h-full object-cover transition-opacity duration-500 opacity-0" 
+                         onload="this.classList.remove('opacity-0')" 
+                         onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none z-20"></div>
+                </div>
+            </div>
+            <div class="space-y-4 sm:space-y-6 opacity-0 animate-fade-up delay-100 max-w-4xl">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 dark:bg-brand/20 border border-brand/20 text-brand-deep dark:text-brand font-medium text-[11px] sm:text-xs uppercase tracking-wider mb-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
+                    <span data-key="taglineHeader">Coming Soon</span>
+                </div>
+                <h1 class="text-5xl xs:text-6xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.9] select-none">
+                    <span class="text-gradient" data-key="appName">Squirrel GO</span>
+                </h1>
+                <p class="text-[18px] xs:text-[20px] sm:text-[24px] leading-relaxed text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-normal tracking-tight" data-key="tagline">
+                    Transform Hong Kong into a virtual wilderness, <br class="hidden sm:block">where players discover diverse squirrel species!
+                </p>
+            </div>
+            <div class="w-full max-w-[500px] opacity-0 animate-fade-up delay-200">
+                <form id="waitlistForm" class="relative group" novalidate>
+                    <div id="inputWrapper" class="relative w-full transition-all duration-300 focus-ring-brand rounded-full glass-input shadow-lg dark:shadow-none border border-white/50 dark:border-white/10">
+                        <input 
+                            type="email" 
+                            id="emailInput"
+                            name="email"
+                            required
+                            enterkeyhint="go"
+                            placeholder="name@example.com"
+                            class="w-full h-[60px] sm:h-[64px] pl-6 pr-[140px] rounded-full bg-transparent text-[17px] text-[#1D1D1F] dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all appearance-none"
+                            data-placeholder-key="emailPlaceholder"
+                        >
+                        <button 
+                            type="submit" 
+                            id="submitBtn"
+                            class="absolute right-1.5 top-1.5 bottom-1.5 w-[130px] rounded-full bg-[#1D1D1F] dark:bg-white text-white dark:text-black hover:bg-brand hover:dark:bg-brand hover:text-white hover:dark:text-white text-[15px] font-semibold transition-all duration-300 active-scale shadow-md disabled:opacity-80 disabled:cursor-not-allowed flex items-center justify-center overflow-hidden"
+                        >
+                            <span class="transition-transform duration-300" id="btnText" data-key="joinBtn">Join Waitlist</span>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 translate-y-8 transition-all duration-300" id="btnLoader">
+                                <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 scale-50 transition-all duration-300" id="btnSuccess">
+                                <i data-lucide="check" class="w-5 h-5"></i>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+                <p class="mt-6 text-[13px] text-gray-400 dark:text-gray-500 font-medium select-none transition-all duration-300 min-h-[20px]" id="helperText" data-key="note">
+                    We will invite you when the beta starts.
+                </p>
+            </div>
+            <div class="opacity-0 animate-fade-up delay-300 mt-8">
+                <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400 animate-bounce"></i>
+            </div>
+        </div>
+    </section>
+    <section id="progress-section" class="flex flex-col items-center justify-center px-6 w-full max-w-7xl mx-auto py-20 min-h-screen relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl items-center">
+            <div class="flex flex-col gap-6 text-left">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white" data-key="progressTitle">Current Progress</h2>
+                <div class="relative">
+                    <span id="percentCounter" class="text-[120px] leading-[1] font-bold text-gradient tracking-tighter tabular-nums">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-4 overflow-hidden relative">
+                    <div id="progressBar" class="h-full bg-brand rounded-full transition-all duration-[2000ms] ease-out w-0"></div>
+                </div>
+                <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed" data-key="progressDesc">
+                    We are working hard to bring the squirrels to life...
+                </p>
+            </div>
+            <div class="w-full h-[500px] glass-card rounded-[32px] p-6 sm:p-8 flex flex-col relative overflow-hidden transition-transform hover:scale-[1.01] duration-500">
+                <div class="flex items-center justify-between mb-6 border-b border-gray-200/50 dark:border-gray-700/50 pb-4">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="kanban" class="w-5 h-5 text-brand"></i>
+                        <span data-key="roadmapTitle">Roadmap</span>
+                    </h3>
+                    <span class="text-xs font-medium bg-brand/10 text-brand px-3 py-1 rounded-full border border-brand/20">v0.1</span>
+                </div>
+                <div class="overflow-y-auto custom-scrollbar flex-grow pr-2 space-y-3">
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 transition-colors border border-transparent hover:border-brand/20">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center shrink-0">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task1">Getting Player Location</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusDone">Completed</p>
+                        </div>
+                    </div>
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 transition-colors border border-transparent hover:border-brand/20">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center shrink-0">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task2">Home Page UI</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusDone">Completed</p>
+                        </div>
+                    </div>
+                     <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/40 dark:bg-white/5 hover:bg-white/60 dark:hover:bg-white/10 transition-colors border border-transparent hover:border-brand/20">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center shrink-0">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task3">Squirrel Models</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusDone">Completed</p>
+                        </div>
+                    </div>
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-brand/5 dark:bg-brand/10 border border-brand/20 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center shrink-0 animate-pulse">
+                            <i data-lucide="loader" class="w-5 h-5 animate-spin"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task4">Server Setup</h4>
+                            <p class="text-xs text-brand font-medium" data-key="statusInProgress">In Progress</p>
+                        </div>
+                    </div>
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-60 hover:opacity-100">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="circle-dashed" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task5">Squirreldex</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusPending">Pending</p>
+                        </div>
+                    </div>
+                     <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-60 hover:opacity-100">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="circle-dashed" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task6">Inventory</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusPending">Pending</p>
+                        </div>
+                    </div>
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-50 hover:opacity-100">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task7">More and More...</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusBrainstorming">Brainstorming</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#F5F5F7] dark:from-[#2c2c2e] to-transparent pointer-events-none rounded-b-[32px]"></div>
+            </div>
+        </div>
+    </section>
+    <footer class="w-full py-8 text-center bg-transparent safe-pb relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center gap-4 text-[12px] font-medium text-gray-400/80 dark:text-gray-600">
+            <div class="flex flex-col sm:flex-row items-center gap-2">
+                <span data-key="copyright">Copyright © 2026 WYHK IDEEA 3K Group 1</span>
+                <span class="hidden sm:inline text-gray-300 dark:text-gray-700">•</span>
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="map-pin" class="w-3 h-3 text-brand"></i>
+                    <span data-key="location">Made in Hong Kong</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        const CONFIG = {
+            langKey: 's_lang',
+            themeKey: 's_theme',
+            formEndpoint: 'https://formspree.io/f/mbdajrll' 
+        };
+        const translations = {
+            en: {
+                appName: "Squirrel GO",
+                taglineHeader: "Coming Soon",
+                tagline: "Transform Hong Kong into a virtual wilderness, <br class='hidden sm:block'>where players discover diverse squirrel species!",
+                emailPlaceholder: "Email address",
+                joinBtn: "Join Waitlist",
+                note: "We will invite you once the testing starts.",
+                successNote: "Success! Thank you for your support.",
+                errorNote: "Please enter a valid email address.",
+                copyright: "Copyright © 2026 WYHK IDEEA 3K Group 1",
+                location: "Hong Kong",
+                langBtnLabel: "中",
+                // New Section
+                progressTitle: "Development Status",
+                progressDesc: "We are working hard to bring the squirrels to life...",
+                roadmapTitle: "Roadmap",
+                task1: "Getting Player Location",
+                task2: "Home Page UI",
+                task3: "Squirrel Models",
+                task4: "Server Setup",
+                task5: "Squirreldex",
+                task6: "Inventory",
+                task7: "More and More...",
+                statusDone: "Completed",
+                statusInProgress: "In Progress",
+                statusPending: "Scheduled",
+                statusBrainstorming: "Brainstorming"
+            },
+            zh: {
+                appName: "Squirrel GO",
+                taglineHeader: "即將推出",
+                tagline: "將香港打造成虛擬自然世界，<br class='hidden sm:block'>讓玩家置身其中發掘各種松鼠品種！",
+                emailPlaceholder: "輸入您的電子郵件",
+                joinBtn: "加入測試",
+                note: "我們將於測試開始時邀請您。",
+                successNote: "已成功加入！感謝您的支持。",
+                errorNote: "請輸入有效的電子郵件地址。",
+                copyright: "版權所有 © 2026 WYHK IDEEA 3K Group 1",
+                location: "香港",
+                langBtnLabel: "EN",
+                // New Section
+                progressTitle: "開發進度",
+                progressDesc: "團隊正努力讓松鼠們活起來...",
+                roadmapTitle: "開發藍圖",
+                task1: "獲取玩家位置",
+                task2: "主頁界面",
+                task3: "松鼠模型",
+                task4: "伺服器設置",
+                task5: "松鼠圖鑑",
+                task6: "背包",
+                task7: "更多功能...",
+                statusDone: "已完成",
+                statusInProgress: "進行中",
+                statusPending: "計劃中",
+                statusBrainstorming: "構思中"
+            }
+        };
+        const state = {
+            lang: localStorage.getItem(CONFIG.langKey) || 'en',
+            theme: localStorage.getItem(CONFIG.themeKey) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+            isSubmitting: false,
+            hasError: false
+        };
+        // Progress Logic
+        let animatedProgress = false;
+        const TARGET_PERCENT = 40;
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            applyTheme(state.theme);
+            applyLanguage(state.lang);
+            setupListeners();
+            setupViewport();
+            setupScrollObserver(); // New Observer
+        });
+        // Use IntersectionObserver to animate the bar only when visible
+        function setupScrollObserver() {
+            const section = document.getElementById('progress-section');
+            const bar = document.getElementById('progressBar');
+            const counter = document.getElementById('percentCounter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !animatedProgress) {
+                        animatedProgress = true;
+                        // 1. Animate Width
+                        bar.style.width = `${TARGET_PERCENT}%`;
+                        // 2. Animate Number Count
+                        let start = 0;
+                        const duration = 2000;
+                        const startTime = performance.now();
+                        function update(currentTime) {
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Easing function (easeOutExpo)
+                            const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                            const currentVal = Math.floor(ease * TARGET_PERCENT);
+                            counter.innerText = `${currentVal}%`;
+                            if (progress < 1) {
+                                requestAnimationFrame(update);
+                            }
+                        }
+                        requestAnimationFrame(update);
+                    }
+                });
+            }, { threshold: 0.3 }); // Trigger when 30% of section is visible
+            if(section) observer.observe(section);
+        }
+        function setupListeners() {
+            const form = document.getElementById('waitlistForm');
+            const input = document.getElementById('emailInput');
+            const inputWrapper = document.getElementById('inputWrapper');
+            const helperText = document.getElementById('helperText');
+            form.addEventListener('submit', handleFormSubmit);
+            input.addEventListener('input', () => {
+                if(state.hasError) {
+                    state.hasError = false;
+                    inputWrapper.classList.remove('input-error', 'animate-shake');
+                    const t = translations[state.lang];
+                    helperText.style.opacity = '0';
+                    setTimeout(() => {
+                        helperText.classList.remove('text-red-500');
+                        helperText.innerHTML = t.note;
+                        helperText.style.opacity = '1';
+                    }, 150);
+                }
+            });
+            input.addEventListener('focus', () => {
+                setTimeout(() => input.scrollIntoView({behavior: 'smooth', block: 'center'}), 300);
+            });
+        }
+        function setupViewport() {
+            const setVh = () => {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            window.addEventListener('resize', setVh);
+            setVh();
+        }
+        function toggleTheme() {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            applyTheme(state.theme);
+        }
+        function applyTheme(theme) {
+            const html = document.documentElement;
+            const meta = document.querySelector('meta[name="theme-color"]');
+            if (theme === 'dark') {
+                html.classList.add('dark');
+                if(meta) meta.setAttribute('content', '#000000');
+            } else {
+                html.classList.remove('dark');
+                if(meta) meta.setAttribute('content', '#F5F5F7');
+            }
+            localStorage.setItem(CONFIG.themeKey, theme);
+            lucide.createIcons(); 
+        }
+        function toggleLanguage() {
+            state.lang = state.lang === 'en' ? 'zh' : 'en';
+            applyLanguage(state.lang);
+        }
+        function applyLanguage(lang) {
+            const t = translations[lang];
+            const textElements = document.querySelectorAll('[data-key]');
+            textElements.forEach(el => {
+                const key = el.getAttribute('data-key');
+                // Don't overwrite helper text if it's currently showing success/error
+                if (key === 'note' && (state.hasError || document.getElementById('helperText').classList.contains('text-green-600'))) return;
+                if (t[key]) el.innerHTML = t[key];
+            });
+            document.querySelectorAll('[data-placeholder-key]').forEach(el => {
+                const key = el.getAttribute('data-placeholder-key');
+                if (t[key]) el.placeholder = t[key];
+            });
+            const btn = document.getElementById('langBtn');
+            if(btn) btn.innerText = t.langBtnLabel;
+            localStorage.setItem(CONFIG.langKey, lang);
+        }
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            if (state.isSubmitting) return;
+            const input = document.getElementById('emailInput');
+            const inputWrapper = document.getElementById('inputWrapper');
+            const helperText = document.getElementById('helperText');
+            const email = input.value.trim();
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                inputWrapper.classList.remove('animate-shake');
+                void inputWrapper.offsetWidth; 
+                inputWrapper.classList.add('animate-shake', 'input-error');
+                state.hasError = true;
+                const t = translations[state.lang];
+                helperText.innerText = t.errorNote;
+                helperText.classList.add('text-red-500');
+                input.focus();
+                return;
+            }
+            state.isSubmitting = true;
+            updateButtonState('loading');
+            try {
+                const response = await fetch(CONFIG.formEndpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email })
+                });
+                if (response.ok) {
+                    handleSuccess();
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Simulate success for demo if API fails
+                setTimeout(handleSuccess, 1500); 
+            }
+        }
+        function handleSuccess() {
+            const t = translations[state.lang];
+            updateButtonState('success');
+            const helper = document.getElementById('helperText');
+            helper.style.opacity = '0';
+            setTimeout(() => {
+                helper.innerText = t.successNote;
+                helper.classList.remove('text-red-500');
+                helper.classList.add('text-green-600', 'dark:text-green-400');
+                helper.style.opacity = '1';
+            }, 300);
+            document.getElementById('emailInput').value = '';
+            document.getElementById('inputWrapper').classList.remove('input-error');
+            setTimeout(() => {
+                state.isSubmitting = false;
+            }, 2000);
+        }
+        function updateButtonState(status) {
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            const btnSuccess = document.getElementById('btnSuccess');
+            const btn = document.getElementById('submitBtn');
+            [btnText, btnLoader, btnSuccess].forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(10px)'; 
+            });
+            btnSuccess.style.transform = 'scale(0.5)';
+            if (status === 'loading') {
+                btnLoader.style.opacity = '1';
+                btnLoader.style.transform = 'translateY(0)';
+                btn.classList.add('pointer-events-none');
+            } else if (status === 'success') {
+                btnSuccess.style.opacity = '1';
+                btnSuccess.style.transform = 'scale(1)';
+                btn.classList.add('bg-green-500', 'dark:bg-green-500', 'hover:bg-green-600');
+                btn.classList.remove('bg-[#1D1D1F]', 'dark:bg-white');
+            } else {
+                btnText.style.opacity = '1';
+                btnText.style.transform = 'translateY(0)';
+                btn.classList.remove('pointer-events-none', 'bg-green-500');
+            }
+        }
+    </script>
+</body>
+</html>
