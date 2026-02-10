@@ -364,21 +364,21 @@
                         </div>
                     </div>
                     <div class="group flex items-center gap-4 p-4 rounded-2xl bg-brand/5 dark:bg-brand/10 border border-brand/20 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center shrink-0">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task4">Server Setup</h4>
+                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusDone">Completed</p>
+                        </div>
+                    </div>
+                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-60 hover:opacity-100">
                         <div class="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center shrink-0 animate-pulse">
                             <i data-lucide="loader" class="w-5 h-5 animate-spin"></i>
                         </div>
                         <div class="flex-grow">
-                            <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task4">Server Setup</h4>
-                            <p class="text-xs text-brand font-medium" data-key="statusInProgress">In Progress</p>
-                        </div>
-                    </div>
-                    <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-60 hover:opacity-100">
-                        <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 flex items-center justify-center shrink-0">
-                            <i data-lucide="circle-dashed" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex-grow">
                             <h4 class="font-semibold text-sm text-gray-900 dark:text-gray-100" data-key="task5">Squirreldex</h4>
-                            <p class="text-xs text-gray-500 dark:text-gray-400" data-key="statusPending">Pending</p>
+                            <p class="text-xs text-brand font-medium" data-key="statusInProgress">In Progress</p>
                         </div>
                     </div>
                      <div class="group flex items-center gap-4 p-4 rounded-2xl bg-white/20 dark:bg-white/5 hover:bg-white/40 dark:hover:bg-white/10 transition-colors opacity-60 hover:opacity-100">
@@ -484,7 +484,7 @@
             hasError: false
         };
         let animatedProgress = false;
-        const TARGET_PERCENT = 40;
+        const TARGET_PERCENT = 60;
         window.addEventListener('load', () => {
             const minLoadTime = 800; 
             setTimeout(() => {
